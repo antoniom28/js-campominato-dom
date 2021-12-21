@@ -1,6 +1,6 @@
 let inizia = 0; //non permette di cambiare la difficoltà durante il gioco
 let finePartita = 0; //non permette di continuare a cliccare se la partita è finita
-const numeroMine = 3;
+const numeroMine = 16;
 
 function difficoltaGioco(scelta) {
     if (inizia == 1)
