@@ -1,0 +1,134 @@
+*{
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+main{
+    background-color: aquamarine;
+}
+
+footer p{
+    margin: 20px 10px;
+}
+
+.title{
+    line-height: 0;
+    display: flex;
+    align-items: center;
+}
+
+.title img{
+    width: 35px;
+    margin: 0 10px;
+}
+
+.title a{
+    text-decoration: none;
+    color: black;
+}
+
+.difficolta{
+    display: flex;
+    align-items: center;
+}
+
+#difficoltaGioco div{
+    background-color: #c1c1c1;
+    border-radius: 10px;
+    padding: 8px 5px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+#difficoltaGioco{
+    margin: 0 10px;
+    display: flex;
+}
+
+.quadrato{
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.row div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lampeggia{
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: lampeggia 3.5s linear infinite;
+}
+
+@keyframes lampeggia {
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+#contenitore div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#contenitore{
+    padding: 60px 0;
+}
+
+.scelto{
+    position: relative;
+}
+.scelto::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid black;
+}
+
+.casella-selezionata{
+    background-color: skyblue;
+    cursor: no-drop;
+}
+
+.bomba.casella-selezionata{
+    background-color: red;
+    background-image: url(img/bomba.svg);
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#esito-partita{
+    color:red;
+    text-align: center;
+}
+
+video{
+    width: 100%;
+}
