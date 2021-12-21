@@ -38,6 +38,7 @@ function difficoltaGioco(scelta) {
                 return;
             if (!this.classList.contains('casella-selezionata')) {
                 tentativi++;
+                console.log('tentativi1',tentativi);
                 this.className += ' casella-selezionata';
             }
             if (this.classList.contains('casella-selezionata') && this.classList.contains('extraLife'))
@@ -45,8 +46,11 @@ function difficoltaGioco(scelta) {
             else if (this.classList.contains('casella-selezionata') && this.classList.contains('bomba'))
                 if (extraLife == 0)
                     haiPerso(numCaselle, tentativi);
-                else
+                else{
                     extraLife = 0;
+                    tentativi--;
+                    console.log('tentativi2',tentativi);
+                }
             else if (tentativi == numCaselle.length - numeroMine)
                 haiVinto(numCaselle);
 
