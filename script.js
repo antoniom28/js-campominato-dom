@@ -35,9 +35,13 @@ function difficoltaGioco(scelta) {
 
     document.getElementById('aiuto').addEventListener("click", function () {
         if(aiutoRimanente > 0){
+            let antiloop = 0;
             while(tentativi < numCaselle.length - numeroMine){ 
                 let casuale = Math.floor(Math.random() * (numCaselle.length - 1) + 1);
                 console.log('sto nel while di AIUTO');
+                antiloop++;
+                if(antiloop == 150)
+                    return;
                 if (!numCaselle[casuale].classList.contains('bomba') && !numCaselle[casuale].classList.contains('casella-selezionata')){
                     numCaselle[casuale].className += ' casella-selezionata';
                     tentativi++;
