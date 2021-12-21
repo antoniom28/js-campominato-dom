@@ -11,7 +11,10 @@ function difficoltaGioco(scelta) {
     let contatore = 1;
 
     //Genera il bootstrap dell'intero tabellone di gioco
-    contenitore.innerHTML += `<h2 id="esito-partita"><button id="cheat">VINCI FACILE</button></h2`;
+    contenitore.innerHTML += `<h2 id="esito-partita">
+    <button id="cheat">VINCI FACILE</button> ///
+    <button id="aiuto">AIUTO RIMANENTE :<span id="aiutoRimanente">3</span></button>
+    </h2`;
     for (let i = 1; i <= scelta; i++) {
         contenitore.innerHTML += `<div class="row g-0" id="row${i}">`;
         const row = document.getElementById('row' + i);
@@ -26,12 +29,38 @@ function difficoltaGioco(scelta) {
     let tentativi = 0;
     let extraLife = 0;
     let numCaselle = document.getElementsByClassName('quadrato');
+
+    //<button id="aiuto">AIUTO RIMANENTE :<span id="aiutoRimanente">3</span></button>
+    let aiutoRimanente = 3;
+
+    document.getElementById('aiuto').addEventListener("click", function () {
+        if(aiutoRimanente > 0){
+            while(tentativi < numCaselle.length - numeroMine){ 
+                let casuale = Math.floor(Math.random() * (numCaselle.length - 1) + 1);
+                console.log('sto nel while di AIUTO');
+                if (!numCaselle[casuale].classList.contains('bomba') && !numCaselle[casuale].classList.contains('casella-selezionata')){
+                    numCaselle[casuale].className += ' casella-selezionata';
+                    tentativi++;
+                    if (tentativi == numCaselle.length - numeroMine){
+                        haiVinto(numCaselle);
+                        aiutoRimanente = 0;
+                        break;
+                    }
+                    aiutoRimanente--;
+                    document.getElementById('aiuto').querySelector('span').innerHTML = aiutoRimanente;
+                    break;
+                }
+            }
+        }
+    });
+
     document.getElementById('cheat').addEventListener("click", function () {
         for (let i = 0; i <= numCaselle.length - 1; i++) {
             if (numCaselle[i].classList.contains('bomba'))
                 numCaselle[i].className += ' mostra-bomba';
         }
     });
+
     for (let i = 0; i <= numCaselle.length - 1; i++) {
         numCaselle[i].addEventListener("click", function () {
             if (finePartita == 1)
@@ -53,7 +82,6 @@ function difficoltaGioco(scelta) {
                 }
             if (tentativi == numCaselle.length - numeroMine)
                 haiVinto(numCaselle);
-
         });
     }
 
@@ -81,6 +109,8 @@ function haiPerso(numCaselle, tentativi) {
     }, 3000);
 }
 
+
+
 function mostraBombe(numCaselle) {
     for (let i = 0; i <= numCaselle.length - 1; i++) {
         if (numCaselle[i].classList.contains('bomba'))
@@ -102,16 +132,18 @@ function settaDifficolta(scelta) {
     }
 }
 
+let giaPiazzate = [];
+
 function piazzaMine(numCaselle) {
     let index = 0;
-    let giaPiazzate = []; //array che tiene conto delle caselle-bomba inserite
+     //array che tiene conto delle caselle-bomba inserite
     let errore = 0; //Entrambi evitano di mettere le bombe su caselle dove sono già presenti
     while (index < numeroMine) {
         errore = 0;
         let casuale = Math.floor(Math.random() * (numCaselle.length - 1) + 1);
         for (let i = 0; i < giaPiazzate.length; i++)
             if (casuale == giaPiazzate[i]) {
-                console.log('TROVATA BOMBA GIA PIAZZATA', casuale);
+                console.log('TROVATA BOMBA GIA PIAZZATA', casuale + 1);
                 errore = 1;
             }
         if (errore == 0) {
