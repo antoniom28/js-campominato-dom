@@ -38,7 +38,7 @@ function difficoltaGioco(scelta) {
                 return;
             if (!this.classList.contains('casella-selezionata')) {
                 tentativi++;
-                console.log('tentativi1',tentativi);
+                console.log('tentativi1',tentativi,numCaselle.length - numeroMine);
                 this.className += ' casella-selezionata';
             }
             if (this.classList.contains('casella-selezionata') && this.classList.contains('extraLife'))
@@ -49,9 +49,9 @@ function difficoltaGioco(scelta) {
                 else{
                     extraLife = 0;
                     tentativi--;
-                    console.log('tentativi2',tentativi);
+                    console.log('tentativi2',tentativi,numCaselle.length - numeroMine);
                 }
-            else if (tentativi == numCaselle.length - numeroMine)
+            if (tentativi == numCaselle.length - numeroMine)
                 haiVinto(numCaselle);
 
         });
