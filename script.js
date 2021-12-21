@@ -1,58 +1,60 @@
 let inizia = 0; //non permette di cambiare la difficoltà durante il gioco
 let finePartita = 0; //non permette di continuare a cliccare se la partita è finita
-let tentativi = 0;
-const numeroMine = 16;
+const numeroMine = 3;
+
 function difficoltaGioco(scelta) {
-    if (inizia == 0) {
-        settaDifficolta(scelta);
-        const contenitore = document.getElementById('contenitore');
-        contenitore.innerHTML = '';
-        let contatore = 1;
+    if (inizia == 1)
+        return;
+    settaDifficolta(scelta);
+    const contenitore = document.getElementById('contenitore');
+    contenitore.innerHTML = '';
+    let contatore = 1;
 
-        //Genera il bootstrap dell'intero tabellone di gioco
-        contenitore.innerHTML += `<h2 id="esito-partita"></h2`;
-        for (let i = 1; i <= scelta; i++) {
-            contenitore.innerHTML += `<div class="row g-0" id="row${i}">`;
-            const row = document.getElementById('row' + i);
-            for (let j = 1; j <= scelta; j++) {
-                let elemento = `<div class="quadrato">` + contatore++ + '</div>';
-                row.innerHTML += elemento;
-            }
+    //Genera il bootstrap dell'intero tabellone di gioco
+    contenitore.innerHTML += `<h2 id="esito-partita"></h2`;
+    for (let i = 1; i <= scelta; i++) {
+        contenitore.innerHTML += `<div class="row g-0" id="row${i}">`;
+        const row = document.getElementById('row' + i);
+        for (let j = 1; j <= scelta; j++) {
+            let elemento = `<div class="quadrato">` + contatore++ + '</div>';
+            row.innerHTML += elemento;
         }
-        inizia = 1;
-        //Aggiunge l'evento click a tutte le caselle
-        let numCaselle = document.getElementsByClassName('quadrato');
-        for (let i = 0; i <= numCaselle.length - 1; i++) {
-            numCaselle[i].addEventListener("click", function () {
-                if (finePartita == 0) {
-                    if (!this.classList.contains('casella-selezionata')) {
-                        tentativi++;
-                        if (tentativi == contatore - 1 - numeroMine)
-                            haiVinto();
-                        this.className += ' casella-selezionata';
-                    }
-                    if (this.classList.contains('casella-selezionata') && this.classList.contains('bomba'))
-                        haiPerso(numCaselle, tentativi);
-                }
-            });
-        }
-
-        //Piazza le MINE
-        piazzaMine(numCaselle);
     }
+    inizia = 1;
+
+    //Aggiunge l'evento click a tutte le caselle
+    let tentativi = 0;
+    let numCaselle = document.getElementsByClassName('quadrato');
+    for (let i = 0; i <= numCaselle.length - 1; i++) {
+        numCaselle[i].addEventListener("click", function () {
+            if (finePartita == 1)
+                return;
+            if (!this.classList.contains('casella-selezionata')) {
+                tentativi++;
+                this.className += ' casella-selezionata';
+            }
+            if (this.classList.contains('casella-selezionata') && this.classList.contains('bomba'))
+                haiPerso(numCaselle, tentativi);
+            else if (tentativi == numCaselle.length - numeroMine)
+                haiVinto(numCaselle);
+
+        });
+    }
+
+    //Piazza le MINE
+    piazzaMine(numCaselle);
+
     return;
 }
 
-function haiVinto() {
+function haiVinto(numCaselle) {
     document.getElementById('esito-partita').innerHTML = 'INCREDIBILE, HAI VINTO !!';
+    mostraBombe(numCaselle);
     finePartita = 1;
 }
 
-function haiPerso(mostraCaselle, tentativi) {
-    for (let i = 0; i <= mostraCaselle.length - 1; i++) {
-        if (mostraCaselle[i].classList.contains('bomba'))
-            mostraCaselle[i].className += ' casella-selezionata';
-    }
+function haiPerso(numCaselle, tentativi) {
+    mostraBombe(numCaselle);
     document.getElementById('esito-partita').innerHTML = 'hai perso con ' + (tentativi - 1) + ' tentativi!';
     finePartita = 1;
     setTimeout(function () {
@@ -63,6 +65,12 @@ function haiPerso(mostraCaselle, tentativi) {
     }, 3000);
 }
 
+function mostraBombe(numCaselle) {
+    for (let i = 0; i <= numCaselle.length - 1; i++) {
+        if (numCaselle[i].classList.contains('bomba'))
+            numCaselle[i].className += ' casella-selezionata';
+    }
+}
 //Evidenza la difficoltà scelta
 function settaDifficolta(scelta) {
     switch (scelta) {
@@ -82,7 +90,6 @@ function piazzaMine(numCaselle) {
     let index = 0;
     let giaPiazzate = []; //array che tiene conto delle caselle-bomba inserite
     let errore = 0; //Entrambi evitano di mettere le bombe su caselle dove sono già presenti
-    console.log('numCaselle.length : ', numCaselle.length);
     while (index < numeroMine) {
         errore = 0;
         let casuale = Math.floor(Math.random() * (numCaselle.length - 1) + 1);
