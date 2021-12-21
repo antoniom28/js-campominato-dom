@@ -117,10 +117,19 @@ footer p{
     cursor: no-drop;
 }
 
-.bomba.casella-selezionata{
+.bomba.casella-selezionata,
+.bomba.mostra-bomba{
     background-color: red;
     background-image: url(img/bomba.svg);
     background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.extraLife.casella-selezionata{
+    background-color: white;
+    background-image: url(img/extralife.png);
+    background-size: 50px;
     background-repeat: no-repeat;
     background-position: center;
 }

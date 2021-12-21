@@ -11,7 +11,7 @@ function difficoltaGioco(scelta) {
     let contatore = 1;
 
     //Genera il bootstrap dell'intero tabellone di gioco
-    contenitore.innerHTML += `<h2 id="esito-partita"></h2`;
+    contenitore.innerHTML += `<h2 id="esito-partita"><button id="cheat">VINCI FACILE</button></h2`;
     for (let i = 1; i <= scelta; i++) {
         contenitore.innerHTML += `<div class="row g-0" id="row${i}">`;
         const row = document.getElementById('row' + i);
@@ -24,7 +24,14 @@ function difficoltaGioco(scelta) {
 
     //Aggiunge l'evento click a tutte le caselle
     let tentativi = 0;
+    let extraLife = 0;
     let numCaselle = document.getElementsByClassName('quadrato');
+    document.getElementById('cheat').addEventListener("click", function () {
+        for (let i = 0; i <= numCaselle.length - 1; i++) {
+            if (numCaselle[i].classList.contains('bomba'))
+                numCaselle[i].className += ' mostra-bomba';
+        }
+    });
     for (let i = 0; i <= numCaselle.length - 1; i++) {
         numCaselle[i].addEventListener("click", function () {
             if (finePartita == 1)
@@ -33,8 +40,13 @@ function difficoltaGioco(scelta) {
                 tentativi++;
                 this.className += ' casella-selezionata';
             }
-            if (this.classList.contains('casella-selezionata') && this.classList.contains('bomba'))
-                haiPerso(numCaselle, tentativi);
+            if (this.classList.contains('casella-selezionata') && this.classList.contains('extraLife'))
+                extraLife = 1;
+            else if (this.classList.contains('casella-selezionata') && this.classList.contains('bomba'))
+                if (extraLife == 0)
+                    haiPerso(numCaselle, tentativi);
+                else
+                    extraLife = 0;
             else if (tentativi == numCaselle.length - numeroMine)
                 haiVinto(numCaselle);
 
@@ -99,10 +111,25 @@ function piazzaMine(numCaselle) {
                 errore = 1;
             }
         if (errore == 0) {
-            console.log('piazzo bomba su : ', casuale);
+            console.log('piazzo bomba su : ', casuale + 1);
             giaPiazzate.push(casuale);
             numCaselle[casuale].className += " bomba";
             index++;
         }
     }
+
+    while (1) {
+        console.log(' while ');
+        let casuale = Math.floor(Math.random() * (numCaselle.length - 1) + 1);
+        errore = 0;
+        for (let i = 0; i < giaPiazzate.length; i++)
+            if (casuale == giaPiazzate[i])
+                errore = 1;
+        if (errore == 0) {
+            console.log('piazzo extra su : ', casuale + 1);
+            numCaselle[casuale].className += " extraLife";
+            break;
+        }
+    }
+
 }
