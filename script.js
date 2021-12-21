@@ -53,7 +53,7 @@ function haiPerso(mostraCaselle, tentativi) {
         if (mostraCaselle[i].classList.contains('bomba'))
             mostraCaselle[i].className += ' casella-selezionata';
     }
-    document.getElementById('esito-partita').innerHTML = 'hai perso con ' + tentativi + ' tentativi!';
+    document.getElementById('esito-partita').innerHTML = 'hai perso con ' + (tentativi - 1) + ' tentativi!';
     finePartita = 1;
     setTimeout(function () {
         document.getElementById('main').innerHTML = `
