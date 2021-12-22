@@ -142,3 +142,9 @@ footer p{
 video{
     width: 100%;
 }
+
+#cheat, #aiuto{
+    border-radius: 40px;
+    padding: 0 20px;
+    background-color: #d5f1a9;
+}
